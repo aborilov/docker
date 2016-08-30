@@ -70,5 +70,7 @@ if [ ! -f ./config/settings.inc.php  ]; then
 	fi
 fi
 
+rm -rf install
+
 echo "\n* Almost ! Starting Apache now\n";
 exec apache2-foreground
