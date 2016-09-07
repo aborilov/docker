@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ ! -f /var/www/html/modules/index.php ]; then
-                      mv -v /tmp/data-ps/prestashop/* /var/www/html/;
+                      cp -r /tmp/data-ps/prestashop/* /var/www/html/;
                       fi
 
 if [ $DB_SERVER = "localhost" ] || [ $DB_SERVER = "127.0.0.1" ]; then
