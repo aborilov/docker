@@ -1,10 +1,5 @@
 #!/bin/sh
 
-chown -R www-data:www-data /var/www/html;
-
-if [ ! -f /var/www/html/modules/index.php ]; then
-        cp -rp /originroot/var/www/html/. /var/www/html/;
-        fi
 
 if [ $DB_SERVER = "localhost" ] || [ $DB_SERVER = "127.0.0.1" ]; then
 	echo "\n* Starting internal MySQL server ...";
