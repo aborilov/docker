@@ -1,21 +1,7 @@
 #!/bin/sh
 
 if [ ! -f /var/www/html/modules/index.php ]; then
-                      cp -r /tmp/data-ps/prestashop/* /var/www/html/;
-                      fi
-
-if [ $DB_SERVER = "localhost" ] || [ $DB_SERVER = "127.0.0.1" ]; then
-	echo "\n* Starting internal MySQL server ...";
-
-	echo "\n /!\ WARNING : The MySQL server will be shortly removed from this container !"
-	echo "\n /!\ An external server will be required."
-	service mysql start
-	if [ $DB_PASSWD != "" ] && [ ! -f ./config/settings.inc.php  ]; then
-		echo "\n* Grant access to MySQL server ...";
-		mysql -h $DB_SERVER -P $DB_PORT -u $DB_USER -p$DB_PASSWD --execute="GRANT ALL ON *.* to $DB_USER@'localhost' IDENTIFIED BY '$DB_PASSWD'; " 2> /dev/null;
-		mysql -h $DB_SERVER -P $DB_PORT -u $DB_USER -p$DB_PASSWD --execute="GRANT ALL ON *.* to $DB_USER@'%' IDENTIFIED BY '$DB_PASSWD'; " 2> /dev/null;
-		mysql -h $DB_SERVER -P $DB_PORT -u $DB_USER -p$DB_PASSWD --execute="flush privileges; " 2> /dev/null;
-	fi
+  cp -r /tmp/data-ps/prestashop/* /var/www/html/;
 fi
 
 RET=1
@@ -58,13 +44,16 @@ if [ ! -f ./config/settings.inc.php  ]; then
 	if [ $PS_INSTALL_AUTO = 1 ]; then
 		echo "\n* Installing PrestaShop, this may take a while ...";
 		if [ $DB_PASSWD = "" ]; then
+            echo "\n* Drop!!!!!!!!!!!!!!!!! ";
 			mysqladmin -h $DB_SERVER -P $DB_PORT -u $DB_USER drop $DB_NAME --force 2> /dev/null;
 			mysqladmin -h $DB_SERVER -P $DB_PORT -u $DB_USER create $DB_NAME --force 2> /dev/null;
 		else
+            echo "\n* Drop2!!!!!!!!!!!!!!!!!!!!";
 			mysqladmin -h $DB_SERVER -P $DB_PORT -u $DB_USER -p$DB_PASSWD drop $DB_NAME --force 2> /dev/null;
 			mysqladmin -h $DB_SERVER -P $DB_PORT -u $DB_USER -p$DB_PASSWD create $DB_NAME --force 2> /dev/null;
 		fi
 
+        echo "\n* Installing";
 		php /var/www/html/$PS_FOLDER_INSTALL/index_cli.php --domain=$PS_DOMAIN --db_server=$DB_SERVER:$DB_PORT --db_name="$DB_NAME" --db_user=$DB_USER \
 			--db_password=$DB_PASSWD --firstname="John" --lastname="Doe" \
 			--password=$ADMIN_PASSWD --email="$ADMIN_MAIL" --language=$PS_LANGUAGE --country=$PS_COUNTRY \

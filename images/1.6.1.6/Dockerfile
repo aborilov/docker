@@ -45,7 +45,7 @@ ENV PS_VERSION 1.6.1.6
 # Get PrestaShop
 ADD https://www.prestashop.com/download/old/prestashop_1.6.1.6.zip /tmp/prestashop.zip
 RUN mkdir /tmp/data-ps && unzip -q /tmp/prestashop.zip -d /tmp/data-ps/ && rm /tmp/prestashop.zip
-COPY config_files/docker_updt_ps_domains.php /var/www/html/
+COPY config_files/docker_updt_ps_domains.php /tmp/data-ps/prestashop/
 
 # Apache configuration
 RUN a2enmod rewrite
@@ -53,10 +53,6 @@ RUN chown www-data:www-data -R /var/www/html/
 
 # PHP configuration
 COPY config_files/php.ini /usr/local/etc/php/
-
-# MySQL configuration
-RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
-EXPOSE 3306
 
 VOLUME /var/www/html/
 
